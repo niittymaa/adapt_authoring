@@ -348,14 +348,14 @@ var steps = [
       }
 
       var json = JSON.parse(data);
-      // 'dependencies' contains a key-value pair representing the plugin name and the semver
-      var plugins = Object.keys(json.dependencies);
+      // 'pluginDependencies' contains a key-value pair representing the plugin name and the semver
+      var plugins = Object.keys(json.pluginDependencies);
 
       async.eachSeries(plugins, function(plugin, pluginCallback) {
-        if(json.dependencies[plugin] === '*') {
+        if(json.pluginDependencies[plugin] === '*') {
           app.bowermanager.installLatestCompatibleVersion(plugin, pluginCallback);
         } else {
-          app.bowermanager.installPlugin(plugin, json.dependencies[plugin], pluginCallback);
+          app.bowermanager.installPlugin(plugin, json.pluginDependencies[plugin], pluginCallback);
         }
       }, next);
     });

@@ -171,11 +171,11 @@ var steps = [
         }
 
         var json = JSON.parse(data);
-        // 'dependencies' contains a key-value pair representing the plugin name and the semver
-        var plugins = Object.keys(json.dependencies);
+        // 'pluginDependencies' contains a key-value pair representing the plugin name and the semver
+        var plugins = Object.keys(json.pluginDependencies);
 
         async.eachSeries(plugins, function(plugin, pluginCallback) {
-          app.bowermanager.installPlugin(plugin, json.dependencies[plugin], function(err) {
+          app.bowermanager.installPlugin(plugin, json.pluginDependencies[plugin], function(err) {
             if (err) {
               return pluginCallback(err);
             }
