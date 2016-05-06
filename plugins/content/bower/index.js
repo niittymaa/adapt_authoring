@@ -30,7 +30,7 @@ var origin = require('../../../'),
     _ = require('underscore'),
     util = require('util'),
     path = require('path'),
-    unzip = require('unzip'),
+    unzip = require('decompress-zip'),
     exec = require('child_process').exec,
     IncomingForm = require('formidable').IncomingForm,
     version = require('../../../version.json');
@@ -679,7 +679,7 @@ function addPackage (plugin, packageInfo, options, cb) {
                     logger.log('error', err);
                     return cb(err);
                   }
-                  
+
                   plugin.updateLegacyContent(newPlugin, oldPlugin, function (err) {
                     if (err) {
                       logger.log('error', err);
@@ -782,7 +782,7 @@ BowerPlugin.prototype.updatePackages = function (plugin, options, cb) {
                     if (packageInfo[key].pkgMeta.framework) {
                       // If the plugin defines a framework, ensure that it is compatible
                       if (semver.satisfies(semver.clean(version.adapt_framework), packageInfo[key].pkgMeta.framework)) {
-                        addPackage(plugin, packageInfo[key], options, next); 
+                        addPackage(plugin, packageInfo[key], options, next);
                       } else {
                         logger.log('warn', 'Unable to install ' + packageInfo[key].pkgMeta.name + ' as it is not supported in the current version of of the Adapt framework');
                         next();
@@ -876,14 +876,17 @@ function handleUploadedPlugin (req, res, next) {
     // try unzipping
     var outputPath = file.path + '_unzipped';
     var rs = fs.createReadStream(file.path);
-    var ws = unzip.Extract({ path: outputPath });
+
+    var decompress = new unzip(file.path);
+
+    decompress.extract({ path: outputPath });
     rs.on('error', function (error) {
       return next(error);
     });
-    ws.on('error', function (error) {
+    decompress.on('error', function (error) {
       return next(error);
     });
-    ws.on('close', function () {
+    decompress.on('extract', function (log) {
       // enumerate output directory and search for bower.json
       fs.readdir(outputPath, function (err, files) {
         if (err) {
@@ -964,7 +967,6 @@ function handleUploadedPlugin (req, res, next) {
 
       });
     });
-    rs.pipe(ws);
 
     // response should be sent by one of the above handlers
   });
