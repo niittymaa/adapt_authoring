@@ -1,5 +1,6 @@
 /**
  * Exposes the log
+ * TODO switch this to use the DB rather than a file
  **/
 var _ = require('underscore');
 var fs = require('fs');
