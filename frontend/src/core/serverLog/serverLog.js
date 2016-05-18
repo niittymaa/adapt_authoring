@@ -17,8 +17,7 @@ define(function(require) {
         "location": "global",
         "text": "Server Log",
         "icon": "fa-server",
-        "callbackEvent": "serverLog:open",
-        "sortOrder": 4
+        "callbackEvent": "serverLog:open"
       });
     }
   });
