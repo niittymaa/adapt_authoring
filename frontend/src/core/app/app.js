@@ -10,6 +10,7 @@ require([
     'coreJS/project/project',
     'coreJS/dashboard/dashboard',
     'coreJS/editor/editor',
+    'coreJS/serverLog/serverLog',
     'coreJS/assetManagement/assetManagement',
     'coreJS/pluginManagement/pluginManagement',
     'coreJS/user/models/sessionModel',
@@ -46,6 +47,7 @@ require([
     Project,
     Dashboard,
     Editor,
+    ServerLog,
     AssetManagement,
     PluginManagement,
     SessionModel,
@@ -96,10 +98,10 @@ require([
                   Origin.initialize();
               });
           });
-          
+
         }
       });
     });
   });
-  
+
 });
