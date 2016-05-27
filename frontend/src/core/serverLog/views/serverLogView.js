@@ -9,14 +9,6 @@ define(function(require){
     tagName: 'div',
     className: 'serverLog',
 
-    settings: {
-      autoRender: false
-    },
-
-    preRender: function() {
-      this.listenTo(this.model, 'change:logs', this.render);
-    },
-
     postRender: function() {
       this.setViewToReady();
     }
