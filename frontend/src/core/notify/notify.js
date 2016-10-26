@@ -24,8 +24,8 @@ define(function(require) {
 		var notifyConsole = require('./plugins/console/index');
 		notifyConsole();
 
-		var notifySockets = require('./plugins/sockets/index');
-		notifySockets();
+		var notifySocket = require('./plugins/socket/index');
+		notifySocket();
 	};
 
 	return Notify;

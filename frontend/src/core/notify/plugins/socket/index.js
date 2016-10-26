@@ -1,5 +1,6 @@
 // LICENCE https://github.com/adaptlearning/adapt_authoring/blob/master/LICENSE
 define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require, io) {
+	var _ = require('underscore');
 	var Origin = require('coreJS/app/origin');
 
 	// Privates
@@ -28,9 +29,12 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 	};
 
 	function notifySubscribers(data) {
-		console.log('notifySubscribers:', data);
+		console.log('Socket.notifySubscribers:', '[' + data.action + ']', data.data);
 		for(var key in subscribers) {
-	    subscribers[key].apply(Socket, data);
+			var subscriber = subscribers[key];
+			if(!subscriber.actions || _.indexOf(subscriber.actions, data.action) > -1) {
+				subscriber.fn.call(Socket, data);
+			}
 		}
 	};
 
@@ -56,29 +60,45 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 	// public API
 
 	var Socket = {
-		subscribe: function(callback) {
-			if(!this.isConnectionOpen()) return false;
+		/**
+		*
+		*/
+		subscribe: function(callback, actions) {
 			var id = nextId++;
 		  callback._listenerId = id;
-		  subscribers[id] = callback;
+		  subscribers[id] = {
+				fn: callback,
+				actions: actions
+			};
 		  return id;
 		},
-		unsubscribe: function(id) {
-			if(!this.isConnectionOpen() || !subscribers[id]) return false;
-		  delete subscribers[id];
-		  // just to make sure the IDs don't get carried away...
-		  if(Object.keys(subscribers).length === 0) {
-		    nextId = 1;
-		  }
-		  return true;
+
+		unsubscribe: function(id, actions) {
+			if(!subscribers[id]) {
+				return false;
+			}
+			if(actions) {
+				for(var i = 0, count = actions.length; i < count; i++) {
+					var i = _.indexOf(subscribers[id].actions, actions[i]);
+					if(i > -1) subscribers[id].actions.splice(i,1);
+				}
+			} else {
+				delete subscribers[id];
+				// just to make sure the IDs don't get carried away...
+				if(Object.keys(subscribers).length === 0) {
+					nextId = 1;
+				}
+			}
+			return true;
 		},
-		publish: function(data, options) {
-			console.log('publish', data);
+
+		publish: function(action, data) {
 			if(!this.isConnectionOpen()) return false;
-			connection.emit('message', JSON.stringify(data));
+			connection.emit('message', JSON.stringify({ action: action, data: data }));
 		},
+
 		isConnectionOpen: function() {
-			return connection.connected;
+			return connection && connection.connected;
 		}
 	};
 
