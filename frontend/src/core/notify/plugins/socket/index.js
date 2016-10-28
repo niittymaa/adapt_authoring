@@ -1,10 +1,6 @@
 // LICENCE https://github.com/adaptlearning/adapt_authoring/blob/master/LICENSE
-define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require, io) {
-	var _ = require('underscore');
-	var Origin = require('coreJS/app/origin');
-
+define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.io/socket.io.js'], function(require, Origin, _, io) {
 	// Privates
-
 	var connection;
 	var subscribers = {};
 	var nextId = 1;
