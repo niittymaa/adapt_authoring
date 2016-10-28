@@ -62,7 +62,11 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 		* @param {Function} callback
 		* @param {Array} actions to listen to
 		*/
-		subscribe: function(callback, actions) {
+		subscribe: function(actions, callback) {
+			if(typeof actions === 'function') {
+				callback = actions;
+				actions = null;
+			}
 			var id = nextId++;
 		  callback._listenerId = id;
 		  subscribers[id] = {
