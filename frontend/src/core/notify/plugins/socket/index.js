@@ -94,7 +94,7 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 
 		publish: function(action, data) {
 			if(!this.isConnectionOpen()) return false;
-			connection.emit('message', JSON.stringify({ action: action, data: data }));
+			connection.broadcast.emit('message', JSON.stringify({ action: action, data: data }));
 		},
 
 		isConnectionOpen: function() {
