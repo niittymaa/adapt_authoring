@@ -47,7 +47,7 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 	function onDisconnect() { };
 
 	function onData(data) {
-		notifySubscribers(JSON.parse(data));
+		notifySubscribers(data);
 	};
 
 	function onError(error) {
@@ -101,7 +101,7 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 		*/
 		publish: function(action, data) {
 			if(!this.isConnectionOpen()) return false;
-			connection.broadcast.emit('message', JSON.stringify({ action: action, data: data }));
+			connection.emit('message', { action: action, data: data });
 		},
 
 		isConnectionOpen: function() {
