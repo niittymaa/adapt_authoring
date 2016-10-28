@@ -61,7 +61,9 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 
 	var Socket = {
 		/**
-		*
+		* Adds a listener
+		* @param {Function} callback
+		* @param {Array} actions to listen to
 		*/
 		subscribe: function(callback, actions) {
 			var id = nextId++;
@@ -72,7 +74,11 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 			};
 		  return id;
 		},
-
+		/**
+		* Removes a listener or stops listening to specific actions
+		* @param  {String} listener ID
+		* @param {Array} actions to stop listening to
+		*/
 		unsubscribe: function(id, actions) {
 			if(!subscribers[id]) {
 				return false;
@@ -91,7 +97,11 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 			}
 			return true;
 		},
-
+		/**
+		* Sends a message across the socket
+		* @param {String} action
+		* @param {Object} data
+		*/
 		publish: function(action, data) {
 			if(!this.isConnectionOpen()) return false;
 			connection.broadcast.emit('message', JSON.stringify({ action: action, data: data }));
