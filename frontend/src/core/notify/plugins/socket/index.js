@@ -18,10 +18,10 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 		connection = io();
 
 		connection.on('connect', onConnect);
-		connection.on('connect_error', onConnectError);
+		connection.on('connect_error', onError);
 		connection.on('reconnect', onReconnect);
-		connection.on('reconnect_error', onReconnectError);
-		connection.on('reconnect_failed', onReconnectFailed);
+		connection.on('reconnect_error', onError);
+		connection.on('reconnect_failed', onError);
 		connection.on('disconnect', onDisconnect);
 
 		connection.on('data', onData);
@@ -50,12 +50,9 @@ define(['require', '//localhost:5000/socket.io/socket.io.js'], function(require,
 		notifySubscribers(JSON.parse(data));
 	};
 
-	// Event errors
-
-	function onConnectError(error) { };
-	function onReconnectError(error) { };
-	function onReconnectFailed(error) { };
-	function onError(error) { };
+	function onError(error) {
+		console.log('Error:', error);
+	};
 
 	// public API
 
