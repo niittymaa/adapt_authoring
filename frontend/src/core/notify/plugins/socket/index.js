@@ -82,8 +82,8 @@ define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.i
 			}
 			if(actions) {
 				for(var i = 0, count = actions.length; i < count; i++) {
-					var i = _.indexOf(subscribers[id].actions, actions[i]);
-					if(i > -1) subscribers[id].actions.splice(i,1);
+					var index = _.indexOf(subscribers[id].actions, actions[i]);
+					if(index > -1) subscribers[id].actions.splice(index,1);
 				}
 			} else {
 				delete subscribers[id];
