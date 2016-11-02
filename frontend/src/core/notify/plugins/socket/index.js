@@ -87,10 +87,6 @@ define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.i
 				}
 			} else {
 				delete subscribers[id];
-				// just to make sure the IDs don't get carried away...
-				if(Object.keys(subscribers).length === 0) {
-					nextId = 1;
-				}
 			}
 			return true;
 		},
