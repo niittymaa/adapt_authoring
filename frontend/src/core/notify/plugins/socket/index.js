@@ -8,7 +8,7 @@ define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.i
 	function init() {
 		Origin.on('app:dataReady', connect);
 		Origin.Notify.register('socket', Socket);
-	};
+	}
 
 	function connect() {
 		connection = io();
@@ -22,7 +22,7 @@ define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.i
 
 		connection.on('data', onData);
 		connection.on('error', onError);
-	};
+	}
 
 	function notifySubscribers(data) {
 		console.log('Socket.notifySubscribers:', '[' + data.action + ']', data.data);
@@ -32,23 +32,23 @@ define(['require', 'coreJS/app/origin', 'underscore', '//localhost:5000/socket.i
 				subscriber.fn.call(Socket, data);
 			}
 		}
-	};
+	}
 
 	/**
 	* Events
 	*/
 
-	function onConnect() { };
-	function onReconnect(attemptNo) { };
-	function onDisconnect() { };
+	function onConnect() { }
+	function onReconnect(attemptNo) { }
+	function onDisconnect() { }
 
 	function onData(data) {
 		notifySubscribers(data);
-	};
+	}
 
 	function onError(error) {
 		console.log('Error:', error);
-	};
+	}
 
 	// public API
 
